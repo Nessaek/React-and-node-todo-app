@@ -1,18 +1,14 @@
-import React from 'react';
-import {
-  AppBar,
-  Toolbar,
-  Typography,
-} from '@material-ui/core';
+import * as React from 'react'
+import {AppBar, Toolbar, Typography,} from '@material-ui/core'
 
 const AppHeader = () => (
     <AppBar position="static">
       <Toolbar>
         <Typography variant="h6" color="inherit">
-          My React App
+          To Do
         </Typography>
       </Toolbar>
     </AppBar>
-);
+)
 
-export default AppHeader;
+export default AppHeader

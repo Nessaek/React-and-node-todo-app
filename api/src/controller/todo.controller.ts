@@ -1,70 +1,66 @@
-import {ITodo} from "../types/todo";
-import { Response, Request } from 'express';
-import Todo from '../model/todo';
+import {ITodo} from "../types/todo"
+import {Request, Response} from 'express'
+import Todo from '../model/todo'
 
 const getTodos = async (req: Request, res: Response): Promise<void> => {
   try {
-    const todos: ITodo[] = await Todo.find();
-    res.status(200).json({ todos })
+    const todos: ITodo[] = await Todo.find()
+    res.status(200).json({todos})
   } catch (error) {
     throw error
   }
-};
+}
 
 const addTodo = async (req: Request, res: Response): Promise<void> => {
   try {
-    const body = req.body as Pick<ITodo, 'name' | 'description' | 'status'>
+    const body = req.body as Pick<ITodo, 'name' | 'text' | 'status' | 'createdAt'>
 
     const todo: ITodo = new Todo({
       name: body.name,
-      description: body.description,
+      text: body.text,
       status: body.status,
+      createdAt: body.createdAt
     })
 
     const newTodo: ITodo = await todo.save()
-    const allTodos: ITodo[] = await Todo.find()
-
-    res.status(201).json({ message: 'Todo added', todo: newTodo, todos: allTodos })
+    res.status(201).json(newTodo)
   } catch (error) {
     throw error
   }
-};
+}
 
 const updateTodo = async (req: Request, res: Response): Promise<void> => {
   try {
     const {
-      params: { id },
+      params: {id},
       body,
     } = req
+    console.log(req)
     const updateTodo: ITodo | null = await Todo.findByIdAndUpdate(
-        { _id: id },
-        body
+        id,
+        body,
+        {
+          new: true
+        }
     )
-    const allTodos: ITodo[] = await Todo.find()
-    res.status(200).json({
-      message: 'Todo updated',
-      todo: updateTodo,
-      todos: allTodos,
-    })
+    console.log(updateTodo)
+    res.status(200).json(updateTodo)
   } catch (error) {
     throw error
   }
-};
+}
 
 const deleteTodo = async (req: Request, res: Response): Promise<void> => {
   try {
     const deletedTodo: ITodo | null = await Todo.findByIdAndRemove(
         req.params.id
     )
-    const allTodos: ITodo[] = await Todo.find()
-    res.status(200).json({
-      message: 'Todo deleted',
-      todo: deletedTodo,
-      todos:allTodos,
-    })
+    res.status(200).json(
+        {...deletedTodo}
+    )
   } catch (error) {
     throw error
   }
-};
+}
 
-export { getTodos, addTodo, updateTodo, deleteTodo };
+export {getTodos, addTodo, updateTodo, deleteTodo}

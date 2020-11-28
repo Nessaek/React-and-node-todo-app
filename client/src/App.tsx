@@ -1,14 +1,10 @@
-import React, { Fragment } from 'react';
-import {
-  CssBaseline,
-  withStyles,
-} from '@material-ui/core';
+import {CssBaseline, withStyles,} from '@material-ui/core'
+import * as React from 'react'
 
-import AppHeader from './components/AppHeader';
-import Home from './pages/Home';
-import Route from "react-router-dom/es/Route";
-import { BrowserRouter } from 'react-router-dom';
-
+import AppHeader from './components/AppHeader'
+import Home from './pages/Home'
+import {BrowserRouter, Route} from 'react-router-dom'
+import {ConfirmProvider} from "material-ui-confirm"
 
 const styles = theme => ({
   main: {
@@ -17,14 +13,16 @@ const styles = theme => ({
       padding: theme.spacing(2),
     },
   },
-});
+})
 
 const App = () => (
-    <BrowserRouter>
-      <CssBaseline />
-      <AppHeader />
-     <Route exact path="/" component={Home} />
-    </BrowserRouter>
-);
+    <ConfirmProvider>
+      <BrowserRouter>
+        <CssBaseline/>
+        <AppHeader/>
+        <Route exact path="/" component={Home}/>
+      </BrowserRouter>
+    </ConfirmProvider>
+)
 
-export default withStyles(styles)(App);
+export default withStyles(styles)(App)
